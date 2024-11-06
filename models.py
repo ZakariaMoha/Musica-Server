@@ -37,7 +37,16 @@ class Album(db.Model):
     # Many to many relationship, Album can contain multiple songs, Table album related to songs table
     songs = db.relationship('Song', secondary='album_songs', backref=db.backref('albums', lazy='dynamic'))
 
+# Genre Table
+class Genre(db.Model):
+     __tablename__ = 'genre'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'), nullable=False)
 
+    # one to many relationship, Genre can categorize multiple songs, Table genre related to songs table
+    songs = db.relationship('Song', backref='genre', lazy=True)
+    
 
 
 

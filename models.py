@@ -34,7 +34,7 @@ class Album(db.Model):
     title = db.Column(db.String, nullable=False)
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'), nullable=False)
 
-    # Many to many relationship, Album can contain multiple songs, Table album related to songs table
+    # one to many relationship, Album can contain multiple songs, Table album related to songs table
     songs = db.relationship('Song', secondary='album_songs', backref=db.backref('albums', lazy='dynamic'))
 
 # Genre Table
@@ -46,7 +46,24 @@ class Genre(db.Model):
 
     # one to many relationship, Genre can categorize multiple songs, Table genre related to songs table
     songs = db.relationship('Song', backref='genre', lazy=True)
+
+# Song table
+class Song(db.Model):
+     __tablename__ = 'songs'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    duration = db.Column(db.Integer, nullable=False)  # Duration in seconds
+    file_path = db.Column(db.Text, nullable=False)
+    album_id = db.Column(db.Integer, db.ForeignKey('albums.id'), nullable=True)
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=True)
     
+    # many to many relationship, playlist can contain multiple songs, and vice versa
+    playlists = db.relationship('PlaylistSong', backref='song', lazy=True)
+
+
+
+
+
 
 
 

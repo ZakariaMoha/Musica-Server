@@ -60,6 +60,23 @@ class Song(db.Model):
     # many to many relationship, playlist can contain multiple songs, and vice versa
     playlists = db.relationship('PlaylistSong', backref='song', lazy=True)
 
+# Playlist Table
+class Playlist(db.Model):
+    __tablename__ = 'playlists'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    songs = db.relationship('PlaylistSong', backref='playlist', lazy=True)
+
+# PlaylistSong Table
+class PlaylistSong(db.Model):
+    __tablename__ = 'playlist_songs'
+    id = db.Column(db.Integer, primary_key=True)
+    playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.id'), nullable=False)
+    song_id = db.Column(db.Integer, db.ForeignKey('songs.id'), nullable=False)
+
 
 
 
